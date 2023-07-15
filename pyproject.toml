@@ -32,6 +32,13 @@ python = "^3.11"
 funcy = "^2.0"
 nest-asyncio = "^1.5.6"
 charset-normalizer = "^3.2.0"
+redis = {version = "^4.6.0", optional = true}
+motor = {version = "^3.2.0", optional = true}
+pymongo = {version = "^4.4.1", optional = true}
+
+[tool.poetry.extras]
+redis = ["redis"]
+mongo = ["motor", "pymongo"]
 
 [tool.poetry.group.test.dependencies]
 ward = "^0.67.2b0"
@@ -108,6 +115,5 @@ directory = "reports/coverage"
 
 [tool.ward]
 path = ["tests"]
-order = "random"
 fail-limit = 20
 progress-style = ["bar"]

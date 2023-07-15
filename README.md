@@ -16,3 +16,40 @@ async def get_todos(title=None, status=None):
 async def add_todo(title, status=False):
     """Add todo."""
 ```
+
+## Remote backends
+
+### Redis
+```python
+from cache_tools import AsyncRedisBackend, Cache
+
+cache = Cache(AsyncRedisBackend('redis://localhost:6379/0'))
+
+
+@cache(namespace='todo')
+async def get_todos(title=None, status=None):
+    """Get all todos filtering by title or status."""
+
+
+@cache.clear(namespaces=['todo'])
+async def add_todo(title, status=False):
+    """Add todo."""
+```
+
+
+### Mongo
+```python
+from cache_tools import AsyncMongoBackend, Cache
+
+cache = Cache(AsyncMongoBackend('mongodb://username:password@localhost:27017'))
+
+
+@cache(namespace='todo')
+async def get_todos(title=None, status=None):
+    """Get all todos filtering by title or status."""
+
+
+@cache.clear(namespaces=['todo'])
+async def add_todo(title, status=False):
+    """Add todo."""
+```
