@@ -18,7 +18,7 @@ def async_backend():
     return AsyncInMemory()
 
 
-@test('InMemory(set): set', tags=['unit', 'backend', 'set'])
+@test('InMemory(set): set', tags=['unit', 'backend', 'inmemory', 'set'])
 def _(
     backend=sync_backend,
     namespace=each(*[fake.uuid4() for _ in range(10)]),
@@ -29,19 +29,19 @@ def _(
     assert backend._store[namespace][key].value == value
 
 
-@test('InMemory(get): no data', tags=['unit', 'backend', 'get'])
+@test('InMemory(get): no data', tags=['unit', 'backend', 'inmemory', 'get'])
 def _(backend=sync_backend):
     assert backend.get('namespace:key') is None
 
 
-@test('InMemory(get): expired', tags=['unit', 'backend', 'get'])
+@test('InMemory(get): expired', tags=['unit', 'backend', 'inmemory', 'get'])
 def _(backend=sync_backend):
     key = 'namespace:key'
     backend.set(key, value='dummy', expires_at=-timedelta(days=10))
     assert backend.get('namespace:key') is None
 
 
-@test('InMemory(get): found', tags=['unit', 'backend', 'get'])
+@test('InMemory(get): found', tags=['unit', 'backend', 'inmemory', 'get'])
 def _(backend=sync_backend):
     key = 'namespace:key'
     value = fake.pystr()
@@ -49,7 +49,9 @@ def _(backend=sync_backend):
     assert backend.get('namespace:key') == value
 
 
-@test('InMemory(clear): namespace', tags=['unit', 'backend', 'clear'])
+@test(
+    'InMemory(clear): namespace', tags=['unit', 'backend', 'inmemory', 'clear']
+)
 def _(backend=sync_backend):
     namespace = fake.uuid4()
 
@@ -59,7 +61,10 @@ def _(backend=sync_backend):
     assert not backend._store[namespace]
 
 
-@test('AsyncInMemory(set): set', tags=['unit', 'backend', 'set'])
+@test(
+    'AsyncInMemory(set): set',
+    tags=['unit', 'backend', 'inmemory', 'async', 'set'],
+)
 async def _(
     backend=async_backend,
     namespace=each(*[fake.uuid4() for _ in range(10)]),
@@ -70,19 +75,28 @@ async def _(
     assert backend._store[namespace][key].value == value
 
 
-@test('AsyncInMemory(get): no data', tags=['unit', 'backend', 'get'])
+@test(
+    'AsyncInMemory(get): no data',
+    tags=['unit', 'backend', 'inmemory', 'async', 'get'],
+)
 async def _(backend=async_backend):
     assert await backend.get('namespace:key') is None
 
 
-@test('AsyncInMemory(get): expired', tags=['unit', 'backend', 'get'])
+@test(
+    'AsyncInMemory(get): expired',
+    tags=['unit', 'backend', 'inmemory', 'async', 'get'],
+)
 async def _(backend=async_backend):
     key = 'namespace:key'
     await backend.set(key, value='dummy', expires_at=-timedelta(days=10))
     assert await backend.get('namespace:key') is None
 
 
-@test('AsyncInMemory(get): found', tags=['unit', 'backend', 'get'])
+@test(
+    'AsyncInMemory(get): found',
+    tags=['unit', 'backend', 'inmemory', 'async', 'get'],
+)
 async def _(backend=async_backend):
     key = 'namespace:key'
     value = fake.pystr()
@@ -90,7 +104,10 @@ async def _(backend=async_backend):
     assert await backend.get('namespace:key') == value
 
 
-@test('AsyncInMemory(clear): namespace', tags=['unit', 'backend', 'clear'])
+@test(
+    'AsyncInMemory(clear): namespace',
+    tags=['unit', 'backend', 'inmemory', 'async', 'clear'],
+)
 async def _(backend=async_backend):
     namespace = fake.uuid4()
 
