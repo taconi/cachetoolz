@@ -2,7 +2,7 @@ SRC := cache_tools/
 
 .PHONY: install
 install:
-	poetry install --with dev --with test
+	poetry install --with dev --with test -E redis -E mongo
 
 .PHONY: check
 check:
