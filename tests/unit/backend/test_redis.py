@@ -5,7 +5,7 @@ from redis.asyncio import Redis as AsyncRedis
 from faker import Faker
 from ward import each, fixture, test
 
-from cache_tools.backend import AsyncRedisBackend, RedisBackend
+from cachetoolz.backend import AsyncRedisBackend, RedisBackend
 
 fake = Faker()
 url = 'redis://localhost:6379/{db}'

@@ -3,7 +3,7 @@ from datetime import timedelta
 from faker import Faker
 from ward import each, fixture, test
 
-from cache_tools.backend import AsyncInMemory, InMemory
+from cachetoolz.backend import AsyncInMemory, InMemory
 
 fake = Faker()
 

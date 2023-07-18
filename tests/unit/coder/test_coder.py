@@ -18,8 +18,8 @@ from uuid import UUID
 
 from ward import each, raises, test
 
-from cache_tools.coder import coder
-from cache_tools.exceptions import RegistryError, UnknownDecoderError
+from cachetoolz.coder import coder
+from cachetoolz.exceptions import RegistryError, UnknownDecoderError
 
 
 decoded = (

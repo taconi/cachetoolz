@@ -7,7 +7,7 @@ from uuid import uuid4
 from charset_normalizer import detect
 from ward import each, test
 
-from cache_tools import utils
+from cachetoolz import utils
 
 
 def func(*args, **kwargs):

@@ -6,7 +6,7 @@ from typing import Coroutine
 
 from ward import each, test
 
-from cache_tools.decorator import Cache
+from cachetoolz.decorator import Cache
 
 
 def sub(*args):
@@ -193,7 +193,7 @@ def _(
     backend.set.side_effect = exc
     logger_mocked = Mock()
 
-    with patch('cache_tools.decorator.get_logger', return_value=logger_mocked):
+    with patch('cachetoolz.decorator.get_logger', return_value=logger_mocked):
         cache = Cache(backend)
 
     result = cache(keygen=lambda *args: 'key')(sub)(3, 2)
@@ -260,7 +260,7 @@ def _(
     backend.clear.side_effect = exc
     logger_mocked = Mock()
 
-    with patch('cache_tools.decorator.get_logger', return_value=logger_mocked):
+    with patch('cachetoolz.decorator.get_logger', return_value=logger_mocked):
         cache = Cache(backend)
 
     result = cache.clear()(sub)(3, 2)

@@ -2,8 +2,8 @@ from dataclasses import dataclass
 
 from ward import each, raises, test
 
-from cache_tools.coder.encoder import encode, register
-from cache_tools.exceptions import RegistryError, UnknownEncoderError
+from cachetoolz.coder.encoder import encode, register
+from cachetoolz.exceptions import RegistryError, UnknownEncoderError
 
 
 @dataclass
