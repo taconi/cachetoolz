@@ -1,4 +1,4 @@
-SRC := cache_tools/
+SRC := cachetoolz/
 
 .PHONY: install
 install:

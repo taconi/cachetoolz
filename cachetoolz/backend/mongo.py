@@ -10,7 +10,7 @@ from ..abc import AsyncBackendABC, BackendABC
 class MongoBackend(BackendABC):
     """MongoDB cache."""
 
-    def __init__(self, url: str, database: str = '.cache_tools'):
+    def __init__(self, url: str, database: str = '.cachetoolz'):
         """Initialize the instance.
 
         Parameters
@@ -25,7 +25,7 @@ class MongoBackend(BackendABC):
             from pymongo import MongoClient
         except ImportError as exc:
             raise RuntimeError(
-                "Install cache_tools with the 'mongo' extra in order "
+                "Install cachetoolz with the 'mongo' extra in order "
                 "to use mongo backend."
             ) from exc
 
@@ -127,7 +127,7 @@ class MongoBackend(BackendABC):
 class AsyncMongoBackend(AsyncBackendABC):
     """Async MongoDB cache."""
 
-    def __init__(self, url: str, database: str = '.cache_tools'):
+    def __init__(self, url: str, database: str = '.cachetoolz'):
         """Initialize the instance.
 
         Parameters
@@ -142,7 +142,7 @@ class AsyncMongoBackend(AsyncBackendABC):
             from motor.motor_asyncio import AsyncIOMotorClient
         except ImportError as exc:
             raise RuntimeError(
-                "Install cache_tools with the 'mongo' extra in order "
+                "Install cachetoolz with the 'mongo' extra in order "
                 "to use mongo backend."
             ) from exc
 

@@ -5,7 +5,7 @@ from motor.motor_asyncio import AsyncIOMotorClient
 from pymongo import MongoClient
 from ward import each, fixture, test
 
-from cache_tools.backend import AsyncMongoBackend, MongoBackend
+from cachetoolz.backend import AsyncMongoBackend, MongoBackend
 
 fake = Faker()
 

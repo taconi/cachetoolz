@@ -3,16 +3,16 @@ requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.poetry]
-name = "cache_tools"
+name = "cachetoolz"
 version = "0.0.1"
 description = "This library provides a decorator for caching functions"
 license = "MIT"
 authors = ["Igor Taconi <igor.taconi@protonmail.com>"]
 maintainers = ["Igor Taconi <igor.taconi@protonmail.com>"]
 readme = "README.md"
-homepage = "https://github.com/taconi/cache-tools/#readme"
-repository = "https://github.com/taconi/cache-tools/"
-documentation = "https://taconi.github.io/cache-tools"
+homepage = "https://github.com/taconi/cachetoolz/#readme"
+repository = "https://github.com/taconi/cachetoolz/"
+documentation = "https://taconi.github.io/cachetoolz"
 keywords = ["python", "cache", "async", "redis", "mongo"]
 classifiers = [
     "Development Status :: 3 - Alpha",
@@ -25,11 +25,11 @@ classifiers = [
     "Operating System :: OS Independent",
     "Topic :: Utilities",
 ]
-include = ["cache_tools"]
+include = ["cachetoolz"]
 exclude = ["reports", "docs", "examples", "tests"]
 
 [tool.poetry.urls]
-"Bug Tracker" = "https://github.com/taconi/cache-tools/issues"
+"Bug Tracker" = "https://github.com/taconi/cachetoolz/issues"
 
 [tool.poetry.dependencies]
 python = "^3.8.1"
@@ -94,7 +94,7 @@ blank = true
 tab-width = 2
 
 [tool.coverage.run]
-source = ["cache_tools"]
+source = ["cachetoolz"]
 
 [tool.coverage.report]
 fail_under = 90

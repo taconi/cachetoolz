@@ -1,7 +1,7 @@
 from ward import raises, test
 
-from cache_tools.coder.decoder import Decoder, register
-from cache_tools.exceptions import RegistryError
+from cachetoolz.coder.decoder import Decoder, register
+from cachetoolz.exceptions import RegistryError
 
 
 @test('register a decoder', tags=['unit', 'decoder', 'register'])

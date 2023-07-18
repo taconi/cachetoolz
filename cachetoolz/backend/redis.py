@@ -22,7 +22,7 @@ class RedisBackend(BackendABC):
             from redis import Redis
         except ImportError as exc:
             raise RuntimeError(
-                "Install cache_tools with the 'redis' extra in order "
+                "Install cachetoolz with the 'redis' extra in order "
                 "to use redis backend."
             ) from exc
 
@@ -106,7 +106,7 @@ class AsyncRedisBackend(AsyncBackendABC):
             from redis.asyncio import Redis
         except ImportError as exc:
             raise RuntimeError(
-                "Install cache_tools with the 'redis' extra in order "
+                "Install cachetoolz with the 'redis' extra in order "
                 "to use redis backend."
             ) from exc
 
