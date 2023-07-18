@@ -22,4 +22,5 @@ fmt:
 tests:
 	@ coverage run -m ward test
 	@ coverage report
+	@ coverage xml
 	@ coverage html
