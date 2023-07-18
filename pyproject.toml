@@ -28,13 +28,15 @@ exclude = ["reports", "docs", "examples", "tests"]
 "Bug Tracker" = "https://github.com/taconi/cache-tools/issues"
 
 [tool.poetry.dependencies]
-python = "^3.11"
+python = "^3.8.1"
 funcy = "^2.0"
 nest-asyncio = "^1.5.6"
 charset-normalizer = "^3.2.0"
 redis = {version = "^4.6.0", optional = true}
 motor = {version = "^3.2.0", optional = true}
 pymongo = {version = "^4.4.1", optional = true}
+typing-extensions = "^4.7.1"
+get-annotations = "^0.1.2"
 
 [tool.poetry.extras]
 redis = ["redis"]
@@ -46,7 +48,6 @@ coverage = {extras = ["toml"], version = "^7.2.7"}
 faker = "^19.1.0"
 
 [tool.poetry.group.dev.dependencies]
-ipython = "^8.14.0"
 ipdb = "^0.13.13"
 isort = "^5.12.0"
 mccabe = "^0.7.0"

@@ -12,6 +12,7 @@ from ipaddress import (
     IPv6Network,
 )
 from pathlib import Path
+from typing import Dict
 from uuid import UUID
 
 
@@ -89,7 +90,7 @@ class ColorInstanceSerializer:
     def encode(self, value: Color):
         return asdict(value)
 
-    def decode(self, value: dict[str, str]):
+    def decode(self, value: Dict[str, str]):
         return Color(name=value['name'])
 
 
@@ -99,7 +100,7 @@ class ColorStaticSerializer:
         return asdict(value)
 
     @staticmethod
-    def decode(value: dict[str, str]):
+    def decode(value: Dict[str, str]):
         return Color(name=value['name'])
 
 
@@ -109,7 +110,7 @@ class ColorClassSerializer:
         return asdict(value)
 
     @classmethod
-    def decode(cls, value: dict[str, str]):
+    def decode(cls, value: Dict[str, str]):
         return Color(name=value['name'])
 
 
@@ -121,7 +122,7 @@ class ColorMissingDecodeSerializer:
 
 class ColorMissingEncodeSerializer:
     @staticmethod
-    def decode(value: dict[str, str]):
+    def decode(value: Dict[str, str]):
         return Color(name=value['name'])
 
 

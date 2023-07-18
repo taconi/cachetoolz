@@ -2,7 +2,7 @@
 
 import json
 from inspect import isclass
-from typing import Any
+from typing import Any, Dict
 
 from ..abc import CoderABC, SerializerABC
 from ..exceptions import RegistryError
@@ -31,7 +31,7 @@ class Coder(CoderABC):
         """
         return json.dumps(value, cls=Encoder)
 
-    def decode(self, value: str) -> dict[str, Any]:
+    def decode(self, value: str) -> Dict[str, Any]:
         """Decode value.
 
         Parameters

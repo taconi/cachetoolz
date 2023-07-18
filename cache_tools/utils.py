@@ -4,9 +4,9 @@ import asyncio
 import pickle
 from functools import wraps
 from hashlib import md5
-from inspect import isawaitable, iscoroutinefunction
+from inspect import isawaitable
 from itertools import chain
-from typing import Any
+from typing import Any, Optional
 
 import nest_asyncio
 
@@ -49,7 +49,7 @@ def default_keygen(
 
 async def make_key(
     namespace: str,
-    keygen: KeyGenerator | None,
+    keygen: Optional[KeyGenerator],
     typed: bool,
     func: Func,
     *args: P.args,
@@ -137,7 +137,7 @@ def manipulate(manipulator: Manipulator) -> Decorator:
                 ensure_async(manipulator, func, *args, **kwargs)
             )
 
-        if iscoroutinefunction(func):
+        if asyncio.iscoroutinefunction(func):
             return wraps(func)(_async)
         return wraps(func)(_sync)
 
