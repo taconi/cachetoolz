@@ -5,7 +5,7 @@ from collections import defaultdict
 from dataclasses import asdict, dataclass
 from datetime import datetime, timedelta
 from functools import partial
-from typing import Any, DefaultDict, TypeVar
+from typing import Any, DefaultDict, Dict, TypeVar
 
 from funcy import walk_values
 
@@ -20,7 +20,7 @@ class Cached:
     expires_at: datetime
 
 
-Store: TypeVar = DefaultDict[str, dict[str, Cached]]
+Store: TypeVar = DefaultDict[str, Dict[str, Cached]]
 
 
 class InMemory(BackendABC):
