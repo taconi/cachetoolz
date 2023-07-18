@@ -15,7 +15,7 @@ from ipaddress import (
 )
 from json import JSONDecoder
 from pathlib import Path
-from typing import Any, ClassVar
+from typing import Any, ClassVar, Dict, Optional
 from uuid import UUID
 
 from .. import types
@@ -25,7 +25,7 @@ from ..exceptions import RegistryError, UnknownDecoderError
 class Decoder(JSONDecoder):
     """Decoder class."""
 
-    DECODERS: ClassVar[dict[str, types.Decoder]] = {
+    DECODERS: ClassVar[Dict[str, types.Decoder]] = {
         'time': time.fromisoformat,
         'date': date.fromisoformat,
         'datetime': datetime.fromisoformat,
@@ -63,7 +63,7 @@ class Decoder(JSONDecoder):
         return self.DECODERS[decoder](obj['__val'])
 
 
-def register(func: types.Decoder, decoder: str | None = None):
+def register(func: types.Decoder, decoder: Optional[str] = None):
     """Register a decoder.
 
     Parameters
