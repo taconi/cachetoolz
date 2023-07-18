@@ -3,7 +3,7 @@
 import logging
 from abc import ABC, abstractmethod
 from datetime import timedelta
-from typing import Any
+from typing import Any, List
 
 from ..log import get_logger
 
@@ -11,7 +11,7 @@ from ..log import get_logger
 class BaseBackend:
     """Base abstract backend."""
 
-    def _separate_namespace(self, key: str) -> list[str]:
+    def _separate_namespace(self, key: str) -> List[str]:
         """Separete the namespace with key_hash.
 
         Parameters

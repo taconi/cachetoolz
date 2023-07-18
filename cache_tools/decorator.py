@@ -3,7 +3,7 @@
 import asyncio
 from datetime import timedelta
 from math import inf, isinf
-from typing import Sequence
+from typing import Optional, Sequence, Union
 
 from funcy import autocurry as curry
 
@@ -54,7 +54,7 @@ class Cache:
 
     """
 
-    def __init__(self, backend: AsyncBackendABC | BackendABC):
+    def __init__(self, backend: Union[AsyncBackendABC, BackendABC]):
         """Initialize the instance.
 
         Parameters
@@ -92,11 +92,11 @@ class Cache:
 
     def __call__(
         self,
-        expire: int | float | timedelta = inf,
+        expire: Union[int, float, timedelta] = inf,
         *,
         namespace: str = 'default',
         typed: bool = False,
-        keygen: KeyGenerator | None = None,
+        keygen: Optional[KeyGenerator] = None,
     ) -> Decorator:
         """Caches a function call and stores it in the namespace."""
         if isinf(expire):

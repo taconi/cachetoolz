@@ -110,6 +110,8 @@ async def _(
     backend.get.return_value = str(expect)
 
     coroutine_mock = AsyncMock(spec=Coroutine)
+    coroutine_mock.configure_mock(__name__='AsyncMock')
+
     result = await Cache(backend)()(coroutine_mock)()
 
     if isinstance(backend, AsyncMock):

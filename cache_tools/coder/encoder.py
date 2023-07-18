@@ -1,6 +1,5 @@
 """Encoder module."""
 
-import inspect
 import json
 import re
 from collections import deque
@@ -18,7 +17,13 @@ from ipaddress import (
 )
 from json import JSONEncoder
 from pathlib import PosixPath
+from typing import Optional
 from uuid import UUID
+
+try:
+    from inspect import get_annotations
+except ImportError:
+    from get_annotations import get_annotations
 
 from charset_normalizer import detect
 from funcy import walk
@@ -43,7 +48,9 @@ class Encoder(JSONEncoder):
         return encode(o)
 
 
-def register(func: types.Encoder, decoder: str | None = None) -> types.Encoder:
+def register(
+    func: types.Encoder, decoder: Optional[str] = None
+) -> types.Encoder:
     """Register a encoder.
 
     Parameters
@@ -64,7 +71,7 @@ def register(func: types.Encoder, decoder: str | None = None) -> types.Encoder:
     """
     if not callable(func):
         raise RegistryError('encoder needs to be a callable')
-    if 'value' not in (annotations := inspect.get_annotations(func)):
+    if 'value' not in (annotations := get_annotations(func)):
         raise RegistryError(
             'encoder needs to have a parameter named `value` '
             'and it needs to have the type annotated'
@@ -94,8 +101,12 @@ def encode(value):
     )
 
 
-@encode.register
-def _(value: str | int | float | bool | None):
+@encode.register(str)
+@encode.register(int)
+@encode.register(float)
+@encode.register(bool)
+@encode.register(type(None))
+def _(value):
     return value
 
 
@@ -140,19 +151,19 @@ def _(value: bytes) -> types.Encoded:
     }
 
 
-@encode.register
-def _(
-    value: time
-    | date
-    | datetime
-    | Decimal
-    | UUID
-    | PosixPath
-    | IPv4Address
-    | IPv4Interface
-    | IPv4Network
-    | IPv6Address
-    | IPv6Interface
-    | IPv6Network,
-) -> types.Encoded:
+@encode.register(time)
+@encode.register(date)
+@encode.register(datetime)
+@encode.register(Decimal)
+@encode.register(UUID)
+@encode.register(PosixPath)
+@encode.register(IPv4Address)
+@encode.register(IPv4Interface)
+@encode.register(IPv4Network)
+@encode.register(IPv6Address)
+@encode.register(IPv6Interface)
+@encode.register(
+    IPv6Network,
+)
+def _(value) -> types.Encoded:
     return {'__val': str(value), '__decoder': decoder_name(value)}
