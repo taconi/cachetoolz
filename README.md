@@ -1,8 +1,19 @@
-# Cache Tools
-This library provides a decorator for caching functions
+# Cache Toolz
+<!-- [![Documentation Status](https://readthedocs.org/projects/cachetoolz/badge/?version=latest)](https://cachetoolz.readthedocs.io/en/latest/?badge=latest) -->
+[![Badge License](https://img.shields.io/github/license/taconi/cachetoolz?label=License&color=%234B78E6)](https://raw.githubusercontent.com/taconi/cachetoolz/main/LICENSE)
+[![CI](https://img.shields.io/github/actions/workflow/status/taconi/cachetoolz/tests.yml?branch=main&color=%23FA9BFA&label=tests)](https://github.com/taconi/cachetoolz/actions/workflows/tests.yml)
+[![codecov](https://img.shields.io/codecov/c/github/taconi/cachetoolz?style=flat&label=Coverage&color=%2373DC8C)](https://codecov.io/gh/taconi/cachetoolz)
+![Repo Size](https://img.shields.io/github/repo-size/taconi/cachetoolz.svg?label=Repo%20size&color=%234B78E6)
 
+[![Supported Python versions](https://img.shields.io/pypi/pyversions/cachetoolz.svg?color=%234B78E6)](https://pypi.python.org/pypi/cachetoolz/)
+[![PyPI version](https://img.shields.io/pypi/v/cachetoolz.svg?color=%23FA9BFA)](https://pypi.org/project/cachetoolz/)
+[![Downloads](https://img.shields.io/pypi/dm/cachetoolz?logo=pypi&color=%2373DC8C)](https://pypi.org/project/cachetoolz/)
+
+---
+
+## Usage
 ```python
-from cache_tools import cache
+from cachetoolz import cache
 
 
 # Add cache so you don't always have to access the database, for example
@@ -21,7 +32,7 @@ async def add_todo(title, status=False):
 
 ### Redis
 ```python
-from cache_tools import AsyncRedisBackend, Cache
+from cachetoolz import AsyncRedisBackend, Cache
 
 cache = Cache(AsyncRedisBackend('redis://localhost:6379/0'))
 
@@ -39,7 +50,7 @@ async def add_todo(title, status=False):
 
 ### Mongo
 ```python
-from cache_tools import AsyncMongoBackend, Cache
+from cachetoolz import AsyncMongoBackend, Cache
 
 cache = Cache(AsyncMongoBackend('mongodb://username:password@localhost:27017'))
 
