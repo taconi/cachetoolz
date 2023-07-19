@@ -19,6 +19,25 @@ By incorporating this caching decorator into your code, you can optimize the exe
 
 Overall, this library simplifies the implementation of caching in your applications, allowing you to enhance performance and reduce resource consumption effectively.
 
+---
+# Summary
+* **[Installation](#installation)**
+* **[How to use](#how-to-use)**
+  * **[Cache parameters](#cache-parameters)**
+    * **[Key generator](#key-generator)**
+  * **[Cache clear](#cache-clear)**
+  * **[Backends](#backends)**
+    * **[In Memory](#in-memory)**
+    * **[Remote Backends](#remote-backends)**
+        * **[Redis](#redis)**
+        * **[Mongo](#mongo)**
+  * **[Coder](#coder)**
+    * **[Supported Types](#supported-types)**
+    * **[Register Coder](#register-coder)**
+    * **[Register Encode](#register-encode)**
+    * **[Register Decode](#register-decode)**
+---
+
 # Installation
 cachetoolz is available from [PyPI](https://pypi.org/project/cachetoolz/) and can be installed by running
 
@@ -288,7 +307,7 @@ class DequeCoder:
 coder.register(DequeCoder(foo='bar'))
 ```
 
-### Redister Encode
+### Register Encode
 If you have no need to decode the result or prefer to add it separately, you have the option to register a single encoder.
 
 ```python
