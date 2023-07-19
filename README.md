@@ -57,10 +57,8 @@ pip install cachetoolz[redis,mongo]
 ```
 
 The following bundles are available:
-Transports and Backends
 
-
-#### Backends 
+#### Backends
 * `cachetoolz[redis]`: for using Redis as a backend.
 * `cachetoolz[mongo]`: for using Mongo as a backend.
 
