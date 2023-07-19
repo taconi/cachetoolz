@@ -102,7 +102,6 @@ class Cache:
         keygen: Optional[KeyGenerator] = None,
     ) -> Decorator:
         """Caches a function call and stores it in the namespace."""
-
         if isinf(ttl):
             ttl = timedelta(weeks=20e3)
         elif not isinstance(ttl, timedelta):
