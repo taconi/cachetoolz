@@ -48,42 +48,41 @@ class Encoder(JSONEncoder):
         return encode(o)
 
 
-def register(
-    func: types.Encoder, decoder: Optional[str] = None
-) -> types.Encoder:
+def register(name: str) -> types.Decorator:
     """Register a encoder.
 
     Parameters
     ----------
-    func
-        Encoder function.
-    decoder
-        Decoder key to keep de function.
+    name
+        Encoder name.
 
     Examples
     --------
     >>> from collections import deque
-    >>> @register
-    ... def deque_encoder(value: deque):
+    >>> @register('deque')
+    ... def _(value: deque):
     ...     return {'iterable': list(value), 'maxlen': value.maxlen}
     ...
 
     """
-    if not callable(func):
-        raise RegistryError('encoder needs to be a callable')
-    if 'value' not in (annotations := get_annotations(func)):
-        raise RegistryError(
-            'encoder needs to have a parameter named `value` '
-            'and it needs to have the type annotated'
+
+    def wrapper(func: types.Encoder) -> types.Encoder:
+        if not callable(func):
+            raise RegistryError('encoder needs to be a callable')
+        if 'value' not in (annotations := get_annotations(func)):
+            raise RegistryError(
+                'encoder needs to have a parameter named `value` '
+                'and it needs to have the type annotated'
+            )
+
+        _type = annotations['value']
+
+        encode.register(_type)(
+            lambda value: {'__val': func(value), '__decoder': name}
         )
+        return func
 
-    _type = annotations['value']
-    decoder = decoder or re.sub('encode[r]?', '', func.__name__).strip('_')
-
-    encode.register(_type)(
-        lambda value: {'__val': func(value), '__decoder': decoder}
-    )
-    return func
+    return wrapper
 
 
 @singledispatch

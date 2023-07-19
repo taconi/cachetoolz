@@ -8,10 +8,9 @@ from cachetoolz.exceptions import RegistryError
 def _():
     decoder = 'test_register'
 
+    @register(decoder)
     def func(arg):
         return arg
-
-    register(func, decoder)
 
     assert id(Decoder.DECODERS.get(decoder)) == id(func)
 
@@ -23,7 +22,7 @@ def _():
     error_msg = 'decoder needs to be a callable'
 
     with raises(RegistryError) as exp:
-        register('no callable')
+        register('dummy')('no callable')
 
     assert exp.expected_ex_type == RegistryError
     assert exp.raised.args[0] == error_msg

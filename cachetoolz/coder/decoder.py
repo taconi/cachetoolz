@@ -63,15 +63,13 @@ class Decoder(JSONDecoder):
         return self.DECODERS[decoder](obj['__val'])
 
 
-def register(func: types.Decoder, decoder: Optional[str] = None):
+def register(name: str) -> types.Decorator:
     """Register a decoder.
 
     Parameters
     ----------
-    func
-        Decoder function.
-    key
-        Decoder key to keep de function.
+    name
+        Decoder name.
 
     Examples
     --------
@@ -83,9 +81,12 @@ def register(func: types.Decoder, decoder: Optional[str] = None):
     ...
 
     """
-    if not callable(func):
-        raise RegistryError('decoder needs to be a callable')
 
-    decoder = decoder or re.sub(r'decode[r]?', '', func.__name__).strip('_')
-    Decoder.DECODERS[decoder] = func
-    return func
+    def wrapper(func: types.Decoder) -> types.Decoder:
+        if not callable(func):
+            raise RegistryError('decoder needs to be a callable')
+
+        Decoder.DECODERS[name] = func
+        return func
+
+    return wrapper

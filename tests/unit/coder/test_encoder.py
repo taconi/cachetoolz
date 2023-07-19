@@ -32,8 +32,8 @@ def _():
 
 @test('register encoder', tags=['unit', 'encoder', 'register'])
 def _():
-    @register
-    def func(value: ColorRGB):
+    @register('color_rgb')
+    def _(value: ColorRGB):
         return value.value
 
     assert encode.registry.get(ColorRGB)
@@ -51,7 +51,7 @@ def _(
     ),
 ):
     with raises(RegistryError) as exp:
-        register(func)
+        register('dummy')(func)
 
     assert exp.expected_ex_type == RegistryError
     assert exp.raised.args[0] == error_msg

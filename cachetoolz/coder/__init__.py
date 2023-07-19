@@ -78,10 +78,10 @@ class Coder(CoderABC):
 
         instance = serializer() if isclass(serializer) else serializer
 
-        decoder = decoder_name(instance).replace('serializer', '').strip('_')
+        name = decoder_name(instance).replace('serializer', '').strip('_')
 
-        encoder_register(instance.encode, decoder)
-        decoder_register(instance.decode, decoder)
+        encoder_register(name)(instance.encode)
+        decoder_register(name)(instance.decode)
 
         return serializer
 
