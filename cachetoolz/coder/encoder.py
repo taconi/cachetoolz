@@ -17,7 +17,6 @@ from ipaddress import (
 )
 from json import JSONEncoder
 from pathlib import PosixPath
-from typing import Optional
 from uuid import UUID
 
 try:

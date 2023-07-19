@@ -15,7 +15,7 @@ from ipaddress import (
 )
 from json import JSONDecoder
 from pathlib import Path
-from typing import Any, ClassVar, Dict, Optional
+from typing import Any, ClassVar, Dict
 from uuid import UUID
 
 from .. import types
