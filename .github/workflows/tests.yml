@@ -39,24 +39,14 @@ jobs:
         uses: snok/install-poetry@v1
         with:
           version: 1.5.1
-          virtualenvs-create: true
-          virtualenvs-in-project: true
+          virtualenvs-create: false
           installer-parallel: true
 
-      - name: Load cached venv
-        id: cached-poetry-dependencies
-        uses: actions/cache@v3
-        with:
-          path: .venv
-          key: venv-${{ runner.os }}-${{ steps.setup-python.outputs.python-version }}-${{ hashFiles('**/poetry.lock') }}
-
       - name: Install dependencies
-        if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
         run: poetry install --no-interaction --with test -E redis -E mongo
 
       - name: Run Tests
         run: |
-          source .venv/bin/activate
           make tests
 
       - name: Upload coverage reports to Codecov
