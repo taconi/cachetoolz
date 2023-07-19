@@ -3,7 +3,7 @@
 import logging
 
 
-def get_logger(name='cache') -> logging.Logger:
+def get_logger(name='cachetoolz') -> logging.Logger:
     """Get a logger.
 
     Parameters
