@@ -33,7 +33,7 @@ def _(
     backend = Backend()
     backend.get.return_value = None
 
-    result = str(Cache(backend)()(sub)(*args))
+    result = str(Cache(backend)(sub)(*args))
 
     expires_at = timedelta(weeks=20e3)
     if isinstance(backend, AsyncMock):
@@ -61,7 +61,7 @@ async def _(
     backend = Backend()
     backend.get.return_value = None
 
-    result = str(await Cache(backend)()(mul)(*args))
+    result = str(await Cache(backend)(mul)(*args))
 
     expires_at = timedelta(weeks=20e3)
     if isinstance(backend, AsyncMock):
@@ -87,7 +87,7 @@ def _(
 
     sub_mock = create_autospec(sub)
 
-    result = Cache(backend)()(sub_mock)()
+    result = Cache(backend)(sub_mock)()
 
     if isinstance(backend, AsyncMock):
         backend.get.assert_awaited_once_with(key)
@@ -112,7 +112,7 @@ async def _(
     coroutine_mock = AsyncMock(spec=Coroutine)
     coroutine_mock.configure_mock(__name__='AsyncMock')
 
-    result = await Cache(backend)()(coroutine_mock)()
+    result = await Cache(backend)(coroutine_mock)()
 
     if isinstance(backend, AsyncMock):
         backend.get.assert_awaited_once_with(key)
@@ -123,12 +123,12 @@ async def _(
 
 
 @test(
-    '(cache) synchronous functions with expiry time',
+    '(cache) synchronous functions with ttl time',
     tags=['unit', 'decorator', 'cache'],
 )
 def _(
     Backend=each(AsyncMock, Mock),
-    expiry=each(7.0, 10),
+    ttl=each(7.0, 10),
     args=each((3, 5, 7), (2, 6, 8)),
     expect=each('-9', '-12'),
     key=each(
@@ -139,9 +139,9 @@ def _(
     backend = Backend()
     backend.get.return_value = None
 
-    result = str(Cache(backend)(expiry)(sub)(*args))
+    result = str(Cache(backend)(ttl=ttl)(sub)(*args))
 
-    expires_at = timedelta(seconds=expiry)
+    expires_at = timedelta(seconds=ttl)
     if isinstance(backend, AsyncMock):
         backend.get.assert_awaited_once_with(key)
         backend.set.assert_awaited_once_with(key, result, expires_at)
@@ -152,12 +152,12 @@ def _(
 
 
 @test(
-    '(cache) asynchronous functions with expiry time',
+    '(cache) asynchronous functions with ttl time',
     tags=['unit', 'decorator', 'cache'],
 )
 async def _(
     Backend=each(AsyncMock, Mock),
-    expiry=each(7.0, 10),
+    ttl=each(7.0, 10),
     args=each((3, 5, 7), (2, 6, 8)),
     expect=each('105', '96'),
     key=each(
@@ -168,9 +168,9 @@ async def _(
     backend = Backend()
     backend.get.return_value = None
 
-    result = str(await Cache(backend)(expiry)(mul)(*args))
+    result = str(await Cache(backend)(ttl=ttl)(mul)(*args))
 
-    expires_at = timedelta(seconds=expiry)
+    expires_at = timedelta(seconds=ttl)
     if isinstance(backend, AsyncMock):
         backend.get.assert_awaited_once_with(key)
         backend.set.assert_awaited_once_with(key, result, expires_at)
@@ -210,14 +210,13 @@ def _(
 )
 def _(
     Backend=each(AsyncMock, Mock),
-    expiry=each(7.0, 10),
     args=each((3, 5, 7), (2, 6, 8)),
     expect=each('-9', '-12'),
 ):
     backend = Backend()
     namespace = 'ns1'
 
-    result = str(Cache(backend).clear([namespace])(sub)(*args))
+    result = str(Cache(backend).clear(namespaces=[namespace])(sub)(*args))
 
     if isinstance(backend, AsyncMock):
         backend.clear.assert_awaited_once_with(namespace)
@@ -232,20 +231,19 @@ def _(
 )
 async def _(
     Backend=each(AsyncMock, Mock),
-    expiry=each(7.0, 10),
     args=each((3, 5, 7), (2, 6, 8)),
     expect=each('105', '96'),
 ):
     backend = Backend()
     namespace = 'ns1'
 
-    result = str(await Cache(backend).clear([namespace])(mul)(*args))
+    result = await Cache(backend).clear(namespaces=[namespace])(mul)(*args)
 
     if isinstance(backend, AsyncMock):
         backend.clear.assert_awaited_once_with(namespace)
     else:
         backend.clear.assert_called_once_with(namespace)
-    assert result == expect
+    assert str(result) == expect
 
 
 @test(
@@ -263,7 +261,7 @@ def _(
     with patch('cachetoolz.decorator.get_logger', return_value=logger_mocked):
         cache = Cache(backend)
 
-    result = cache.clear()(sub)(3, 2)
+    result = cache.clear(sub)(3, 2)
 
     logger_mocked.error.assert_called_once_with(
         "Error to clear cache 'namespaces=%s': exception=%s", ('default',), exc

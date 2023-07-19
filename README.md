@@ -23,7 +23,7 @@ Overall, this library simplifies the implementation of caching in your applicati
 # Summary
 * **[Installation](#installation)**
   * **[Bundles](#bundles)**
-* **[How to use](#how-to-use)**
+* **[Quickstart](#quickstart)**
   * **[Cache parameters](#cache-parameters)**
     * **[Key generator](#key-generator)**
   * **[Cache clear](#cache-clear)**
@@ -62,7 +62,7 @@ The following bundles are available:
 * `cachetoolz[redis]`: for using Redis as a backend.
 * `cachetoolz[mongo]`: for using Mongo as a backend.
 
-# How to use
+# Quickstart
 ```python
 from asyncio import Lock
 from dataclasses import asdict, dataclass, field
@@ -121,11 +121,11 @@ async def add_todo(title, status=False):
 
 ## Cache parameters
 The decorator may have configured it with some parameters.
-All parameters except `expire` need to be passed namely.
+All parameters need to be passed namely.
 
 | Parameter   | Description | Type | Default |
 | ----------- | ----------- | ---- | ------- |
-| `expire`    | cache expiration time in seconds | `int`, `float`, `timedelta` | `math.inf` |
+| `ttl`       | cache ttl (time to live) | `int`, `float`, `timedelta` | `math.inf` |
 | `namespace` | namespace to cache | `str` | `"default"` |
 | `typed`     | If typed is set to true, function arguments of different types will be cached separately | `bool` | `False` |
 | `keygen`    | function to generate a cache identifier key | `cachetoolz.types.KeyGenerator` | `cachetoolz.utils.default_keygen` |

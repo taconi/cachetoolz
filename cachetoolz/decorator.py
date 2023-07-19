@@ -17,10 +17,13 @@ from .utils import ensure_async, make_key, manipulate
 class Cache:
     """Caches a function call and stores it in the namespace.
 
+    Bare decorator, ``@cache``, is supported as well as a call with
+    keyword arguments ``@cache(ttl=7200)``.
+
     Parameters
     ----------
-    expire
-        cache expiration time in seconds
+    ttl
+        cache ttl (time to live)
     namespace
         namespace to cache
     typed
@@ -31,7 +34,7 @@ class Cache:
 
     Examples
     --------
-    >>> @cache()
+    >>> @cache
     ... def foo(_id):
     ...     ...
     ...
@@ -41,13 +44,13 @@ class Cache:
     ...     ...
     ...
 
-    >>> @cache(60)  # set an expiration time in seconds
+    >>> @cache(ttl=60)  # set an expiration time in seconds
     ... def foo_bar(filters):
     ...     ...
     ...
 
     >>> from datetime import timedelta
-    >>> @cache(timedelta(days=1))  # Use timedelta to set the expiration
+    >>> @cache(ttl=timedelta(days=1))  # Use timedelta to set the expiration
     ... def foobar(filters):
     ...     ...
     ...
@@ -68,7 +71,7 @@ class Cache:
 
     async def _cache(
         self,
-        expire: timedelta,
+        ttl: timedelta,
         keygen: KeyGenerator,
         func: Func,
         *args: P.args,
@@ -82,7 +85,7 @@ class Cache:
         result = coder.encode(await ensure_async(func, *args, **kwargs))
 
         try:
-            await ensure_async(self.backend.set, key, result, expire)
+            await ensure_async(self.backend.set, key, result, ttl)
         except Exception as exception:
             self._logger.error(
                 "Error to set cache 'key=%s': exception=%s", key, exception
@@ -92,21 +95,27 @@ class Cache:
 
     def __call__(
         self,
-        expire: Union[int, float, timedelta] = inf,
-        *,
+        *args,
+        ttl: Union[int, float, timedelta] = inf,
         namespace: str = 'default',
         typed: bool = False,
         keygen: Optional[KeyGenerator] = None,
     ) -> Decorator:
         """Caches a function call and stores it in the namespace."""
-        if isinf(expire):
-            expire = timedelta(weeks=20e3)
-        elif not isinstance(expire, timedelta):
-            expire = timedelta(seconds=expire)
+
+        if isinf(ttl):
+            ttl = timedelta(weeks=20e3)
+        elif not isinstance(ttl, timedelta):
+            ttl = timedelta(seconds=ttl)
 
         keygen = curry(make_key)(namespace, keygen, typed)
-        _cache = curry(Cache._cache)(self, expire, keygen)
-        return manipulate(_cache)
+        manipulator = manipulate(curry(Cache._cache)(self, ttl, keygen))
+
+        if args:
+            # @cache
+            return manipulator(args[0])
+        # @cache()
+        return manipulator
 
     async def _clear(
         self,
@@ -129,7 +138,9 @@ class Cache:
         result = coder.encode(await ensure_async(func, *args, **kwargs))
         return coder.decode(result)
 
-    def clear(self, namespaces: Sequence[str] = ('default',)) -> Decorator:
+    def clear(
+        self, *args, namespaces: Sequence[str] = ('default',)
+    ) -> Decorator:
         """Clears all caches for all namespaces.
 
         Parameters
@@ -144,5 +155,10 @@ class Cache:
         ...     ...
 
         """
-        _clear = curry(Cache._clear)(self, namespaces)
-        return manipulate(_clear)
+        manipulator = manipulate(curry(Cache._clear)(self, namespaces))
+
+        if args:
+            # @cache.clear
+            return manipulator(args[0])
+        # @cache.clear(namespaces=['ns1'])
+        return manipulator
