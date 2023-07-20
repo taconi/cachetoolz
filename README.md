@@ -299,11 +299,11 @@ class DequeStaticCoder:
 @coder.register
 class DequeClassCoder:
     @classmethod
-    def encode(value: deque):
+    def encode(cls, value: deque):
         return {'iterable': list(value), 'maxlen': value.maxlen}
 
     @classmethod
-    def decode(value):
+    def decode(cls, value):
         return deque(val['iterable'], val['maxlen'])
 ```
 
