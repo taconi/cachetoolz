@@ -1,7 +1,7 @@
 """Redis memory."""
 
 from datetime import timedelta
-from typing import Any
+from typing import Any, Dict
 
 from ..abc import AsyncBackendABC, BackendABC
 
@@ -9,13 +9,19 @@ from ..abc import AsyncBackendABC, BackendABC
 class RedisBackend(BackendABC):
     """Redis cache."""
 
-    def __init__(self, url: str):
+    def __init__(self, url: str, **kwargs: Dict[str, Any]):
         """Initialize the instance.
+
+        The ``decode_responses`` parameter will always be True
+        as the result needs to be returned as a string.
 
         Parameters
         ----------
         url
             Redis url
+        kwargs
+            Takes the same constructor arguments as
+            :method:`~redis.client.Redis.from_url`
 
         """
         try:
@@ -27,7 +33,8 @@ class RedisBackend(BackendABC):
             ) from exc
 
         self._url = url
-        self._backend = Redis.from_url(self._url, decode_responses=True)
+        kwargs['decode_responses'] = True
+        self._backend = Redis.from_url(self._url, **kwargs)
 
     def __repr__(self):
         """Creates a visual representation of the instance."""
@@ -93,13 +100,19 @@ class RedisBackend(BackendABC):
 class AsyncRedisBackend(AsyncBackendABC):
     """Async Redis backend."""
 
-    def __init__(self, url: str):
+    def __init__(self, url: str, **kwargs):
         """Initialize the instance.
+
+        The ``decode_responses`` parameter will always be True
+        as the result needs to be returned as a string.
 
         Parameters
         ----------
         url
             Redis url
+        kwargs
+            Takes the same constructor arguments as
+            :method:`~redis.asyncio. client.Redis.from_url`
 
         """
         try:
@@ -111,7 +124,8 @@ class AsyncRedisBackend(AsyncBackendABC):
             ) from exc
 
         self._url = url
-        self._backend = Redis.from_url(self._url, decode_responses=True)
+        kwargs['decode_responses'] = True
+        self._backend = Redis.from_url(self._url, **kwargs)
 
     def __repr__(self):
         """Creates a visual representation of the instance."""

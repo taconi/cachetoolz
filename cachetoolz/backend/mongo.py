@@ -2,7 +2,7 @@
 
 from contextlib import contextmanager
 from datetime import datetime, timedelta
-from typing import Any
+from typing import Any, Dict
 
 from ..abc import AsyncBackendABC, BackendABC
 
@@ -10,15 +10,23 @@ from ..abc import AsyncBackendABC, BackendABC
 class MongoBackend(BackendABC):
     """MongoDB cache."""
 
-    def __init__(self, url: str, database: str = '.cachetoolz'):
+    def __init__(
+        self,
+        host: str = 'localhost',
+        database: str = '.cachetoolz',
+        **kwargs: Dict[str, Any],
+    ):
         """Initialize the instance.
 
         Parameters
         ----------
-        url
-            Mongo url
+        host
+            MongoDB URI
         database
             Cache database name
+        kwargs
+            Takes the same constructor arguments as
+            :class:`~pymongo.mongo_client.MongoClient`
 
         """
         try:
@@ -30,18 +38,21 @@ class MongoBackend(BackendABC):
             ) from exc
 
         self._client_cls = MongoClient
+        self._kwargs = kwargs
 
-        self._url = url
+        self._kwargs['host'] = host
+
+        self._host = host
         self._database = database
 
     def __repr__(self):
         """Creates a visual representation of the instance."""
         _cls = self.__class__.__name__
-        return f'{_cls}(url="{self._url}", database="{self._database}")'
+        return f'{_cls}(host="{self._host}", database="{self._database}")'
 
     @contextmanager
     def _get_database_or_collection(self, collection=None):
-        with self._client_cls(self._url) as client:
+        with self._client_cls(**self._kwargs) as client:
             if collection:
                 yield client[self._database][collection]
             else:
@@ -127,15 +138,23 @@ class MongoBackend(BackendABC):
 class AsyncMongoBackend(AsyncBackendABC):
     """Async MongoDB cache."""
 
-    def __init__(self, url: str, database: str = '.cachetoolz'):
+    def __init__(
+        self,
+        host: str = 'localhost',
+        database: str = '.cachetoolz',
+        **kwargs: Dict[str, Any],
+    ):
         """Initialize the instance.
 
         Parameters
         ----------
-        url
-            Mongo url
+        host
+            MongoDB URI
         database
             Cache database name
+        kwargs
+            Takes the same constructor arguments as
+            :class:`~pymongo.mongo_client.MongoClient`
 
         """
         try:
@@ -147,18 +166,20 @@ class AsyncMongoBackend(AsyncBackendABC):
             ) from exc
 
         self._client_cls = AsyncIOMotorClient
+        self._kwargs = kwargs
+        self._kwargs['host'] = host
 
-        self._url = url
+        self._host = host
         self._database = database
 
     def __repr__(self):
         """Creates a visual representation of the instance."""
         _cls = self.__class__.__name__
-        return f'{_cls}(url="{self._url}", database="{self._database}")'
+        return f'{_cls}(host="{self._host}", database="{self._database}")'
 
     @contextmanager
     def _get_database_or_collection(self, collection=None):
-        client = self._client_cls(self._url)
+        client = self._client_cls(**self._kwargs)
         try:
             if collection:
                 yield client[self._database][collection]
