@@ -1,11 +1,11 @@
 from typing import Any
 
-from cachetoolz import AsyncMemoryMongo, Cache
+from cachetoolz import AsyncMongoBackend, Cache
 from cachetoolz.coder import decoder, encoder
 
 from .models import Hero
 
-cache = Cache(AsyncMemoryMongo('mongodb://root:password@localhost:27017'))
+cache = Cache(AsyncMongoBackend('mongodb://root:password@localhost:27017'))
 
 
 @encoder.register('hero')

@@ -18,7 +18,7 @@ async def create_hero(body: Hero) -> Hero:
     return body
 
 
-@cache(expire=60, namespace='hero')
+@cache(ttl=60, namespace='hero')
 async def read_hero() -> list[Hero]:
     logger.debug('Read')
     async with Session() as session:
@@ -27,7 +27,7 @@ async def read_hero() -> list[Hero]:
     return heroes
 
 
-@cache(expire=60, namespace='hero')
+@cache(ttl=60, namespace='hero')
 async def read_hero_filter(body: Filter) -> list[Hero]:
     logger.debug('Read filter')
     query = select(Hero)
