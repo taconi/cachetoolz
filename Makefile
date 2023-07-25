@@ -2,7 +2,12 @@ SRC := cachetoolz/
 
 .PHONY: install
 install:
-	poetry install --with dev --with test -E redis -E mongo
+	echo 'Installing dependencies'
+	@ poetry install --with dev --with test -E redis -E mongo
+	echo 'Installing pre-commit'
+	@ pre-commit install
+	echo 'Installing gitlint'
+	@ gitlint install-hook
 
 .PHONY: check
 check:
