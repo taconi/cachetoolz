@@ -30,7 +30,7 @@ pip install cachetoolz
 ```
 
 # A Example
-```{.py title="todo.py" hl_lines="16-17 25-26 30-31 35-36"}
+```python title="todo.py" hl_lines="16-17 25-26 30-31 35-36"
 from dataclasses import asdict, dataclass, field
 from datetime import timedelta
 from uuid import UUID, uuid4
