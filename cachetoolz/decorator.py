@@ -20,45 +20,105 @@ class Cache:
     Bare decorator, ``@cache``, is supported as well as a call with
     keyword arguments ``@cache(ttl=7200)``.
 
+
     Parameters
     ----------
-    ttl
+    backend
+        Cache backend
+
+    Examples
+    --------
+
+    With redis async backend
+    >>> from cachetoolz import AsyncRedisBackend, Cache
+    >>> cache = Cache(AsyncRedisBackend())
+
+    With redis sync backend
+    >>> from cachetoolz import RedisBackend, Cache
+    >>> cache = Cache(RedisBackend())
+
+
+    # @cache
+    Decorator for caching a function call.
+
+    Parameters
+    ----------
+    ttl : int | float | timedelta, default=math.inf
         cache ttl (time to live)
-    namespace
+    namespace : str, default='default'
         namespace to cache
-    typed
+    typed : bool, default=False
         If typed is set to true, function arguments of different types
         will be cached separately
-    keygen
+    keygen : Optional[cachetoolz.types.KeyGenerator], default=None
         function to generate a cache identifier key
 
     Examples
     --------
+    A simple cache
     >>> @cache
-    ... def foo(_id):
+    ... def func(*args, **kwargs):
     ...     ...
     ...
 
-    >>> @cache(namespace='bar')  # specific a namespace
-    ... def bar(filters):
+    Specific a namespace
+    >>> @cache(namespace='bar')
+    ... def func(*args, **kwargs):
     ...     ...
     ...
 
-    >>> @cache(ttl=60)  # set an expiration time in seconds
-    ... def foo_bar(filters):
+    Set an expiration time in seconds
+    >>> @cache(ttl=60)
+    ... def func(*args, **kwargs):
     ...     ...
     ...
 
+    Use timedelta to set the expiration
     >>> from datetime import timedelta
-    >>> @cache(ttl=timedelta(days=1))  # Use timedelta to set the expiration
-    ... def foobar(filters):
+    >>> @cache(ttl=timedelta(days=1))
+    ... def func(*args, **kwargs):
+    ...     ...
+    ...
+
+    Differentiate caching based on argument types
+    >>> @cache(typed=True)
+    ... def func(*args, **kwargs):
+    ...     ...
+    ...
+
+    Using a custom keygen
+    >>> def custom_keygen(
+    ...     typed: bool, func: Func, *args: P.args, **kwargs: P.kwargs
+    ... ) -> str:
+    ...     '''Build a key to a function.
+    ...
+    ...     Parameters
+    ...     ----------
+    ...     typed
+    ...         If typed is set to true, function arguments of different types
+    ...         will be cached separately
+    ...     func
+    ...         Function
+    ...     args
+    ...         Function positional arguments
+    ...     kwargs
+    ...         Named function arguments
+    ...
+    ...     Returns
+    ...     -------
+    ...         Cache identifier key
+    ...
+    ...     '''
+    ...
+    >>> @cache(keygen=custom_keygen)
+    ... def func(*args, **kwargs):
     ...     ...
     ...
 
     """
 
     def __init__(self, backend: Union[AsyncBackendABC, BackendABC]):
-        """Initialize the instance.
+        """Initialize the cache instance.
 
         Parameters
         ----------
@@ -95,24 +155,28 @@ class Cache:
 
     def __call__(
         self,
-        *args,
+        func: Optional[Func] = None,
+        /,
+        *,
         ttl: Union[int, float, timedelta] = inf,
         namespace: str = 'default',
         typed: bool = False,
         keygen: Optional[KeyGenerator] = None,
     ) -> Decorator:
         """Caches a function call and stores it in the namespace."""
-        if isinf(ttl):
-            ttl = timedelta(weeks=20e3)
-        elif not isinstance(ttl, timedelta):
+        if isinstance(ttl, (int, float)) and not isinf(ttl):
             ttl = timedelta(seconds=ttl)
+        elif isinstance(ttl, timedelta):
+            pass
+        elif isinf(ttl):
+            ttl = timedelta(weeks=20e3)
 
         keygen = curry(make_key)(namespace, keygen, typed)
         manipulator = manipulate(curry(Cache._cache)(self, ttl, keygen))
 
-        if args:
+        if func:
             # @cache
-            return manipulator(args[0])
+            return manipulator(func)
         # @cache()
         return manipulator
 
@@ -138,26 +202,39 @@ class Cache:
         return coder.decode(result)
 
     def clear(
-        self, *args, namespaces: Sequence[str] = ('default',)
+        self,
+        func: Optional[Func] = None,
+        /,
+        *,
+        namespaces: Sequence[str] = ('default',),
     ) -> Decorator:
         """Clears all caches for all namespaces.
 
+        This decorator will clear all caches contained in the specified
+        namespaces once the decorated function is executed
+
         Parameters
         ----------
-        namespaces
+        namespaces : Sequence[str], default=('default',)
             namespace to be cleaned.
 
         Examples
         --------
-        >>> @cache.clear(namespaces=['book'])
-        ... def create_book(book):
+        A simple clear cache
+        >>> @cache.clear
+        ... def func(*args, **kwargs):
+        ...     ...
+
+        Defining the namespaces to be cleaned up
+        >>> @cache.clear(namespaces=['foo'])
+        ... def func(*args, **kwargs):
         ...     ...
 
         """
         manipulator = manipulate(curry(Cache._clear)(self, namespaces))
 
-        if args:
+        if func:
             # @cache.clear
-            return manipulator(args[0])
+            return manipulator(func)
         # @cache.clear(namespaces=['ns1'])
         return manipulator

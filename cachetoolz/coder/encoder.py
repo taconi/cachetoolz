@@ -33,7 +33,7 @@ from ..utils import decoder_name
 
 
 class Encoder(JSONEncoder):
-    """Encoder class."""
+    """JSON encoder class."""
 
     def default(self, o):
         """Turns a python object into a json object.

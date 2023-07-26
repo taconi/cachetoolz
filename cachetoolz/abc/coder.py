@@ -13,12 +13,13 @@ class CoderABC(ABC):
 
         Parameters
         ----------
-        value
-            Value to encode
+        value : Any
+            Value to encode.
 
         Returns
         -------
-            Value encoded
+        encode : Any
+            Value encoded.
 
         """
 
@@ -28,11 +29,12 @@ class CoderABC(ABC):
 
         Parameters
         ----------
-        value
-            Value to decode
+        value : Any
+            Value to decode.
 
         Returns
         -------
-            Value decoded
+        decoded : Any
+            Value decoded.
 
         """

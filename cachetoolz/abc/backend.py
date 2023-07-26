@@ -9,27 +9,53 @@ from ..log import get_logger
 
 
 class BaseBackend:
-    """Base abstract backend."""
+    """Base abstract backend.
+
+    Attributes
+    ----------
+    logger : logging.Logger
+        Package logger.
+
+    """
 
     def _separate_namespace(self, key: str) -> List[str]:
         """Separete the namespace with key_hash.
 
         Parameters
         ----------
-        key
+        key : str
             Key with namespace and key_hash
+
+        Returns
+        -------
+        ns_key : list[str]
+            Separate namespace from cache identifier key
 
         """
         return key.split(':')
 
     @property
     def logger(self) -> logging.Logger:
-        """Get logger."""
+        """Get logger.
+
+        Returns
+        -------
+        logger : logging.Logger
+            Package logger.
+
+        """
         return get_logger()
 
 
 class BackendABC(BaseBackend, ABC):
-    """Abstract backend."""
+    """Abstract backend.
+
+    Attributes
+    ----------
+    logger : logging.Logger
+        Package logger.
+
+    """
 
     @abstractmethod
     def get(self, key: str) -> Any:
@@ -37,18 +63,32 @@ class BackendABC(BaseBackend, ABC):
 
         Parameters
         ----------
-        key
-            Cache identifier key
+        key : str
+            Cache identifier key.
 
         Returns
         -------
-            Value cached if exists and not expired else return None
+        with_cache : Any
+            Value cached.
+        without_cache : None
+            If not exists or expired.
 
         """
 
     @abstractmethod
     def set(self, key: str, value: str, expires_at: timedelta) -> None:
-        """Set a value with expires time."""
+        """Set a value with expires time.
+
+        Parameters
+        ----------
+        key : str
+            cache identifier key.
+        value : str
+            value to cache encoded.
+        expires_at : datetime.timedelta
+            expiry time.
+
+        """
 
     @abstractmethod
     def clear(self, namespace: str) -> None:
@@ -56,14 +96,21 @@ class BackendABC(BaseBackend, ABC):
 
         Parameters
         ----------
-        namespaces
+        namespaces : str
             namespace to cache.
 
         """
 
 
 class AsyncBackendABC(BaseBackend, ABC):
-    """Abstract async backend."""
+    """Abstract async backend.
+
+    Attributes
+    ----------
+    logger : logging.Logger
+        Package logger.
+
+    """
 
     @abstractmethod
     async def get(self, key: str) -> Any:
@@ -71,12 +118,15 @@ class AsyncBackendABC(BaseBackend, ABC):
 
         Parameters
         ----------
-        key
-            cache identifier key
+        key : str
+            cache identifier key.
 
         Returns
         -------
-            Value cached if exists and not expired else return None
+        with_cache : Any
+            Value cached.
+        without_cache : None
+            If not exists or expired.
 
         """
 
@@ -86,12 +136,12 @@ class AsyncBackendABC(BaseBackend, ABC):
 
         Parameters
         ----------
-        key
-            cache identifier key
-        value
-            value to cach
-        expires_at
-            expiry time
+        key : str
+            cache identifier key.
+        value : str
+            value to cache encoded.
+        expires_at : datetime.timedelta
+            expiry time.
 
         """
 
@@ -101,7 +151,7 @@ class AsyncBackendABC(BaseBackend, ABC):
 
         Parameters
         ----------
-        namespaces
-            namespace to cache
+        namespaces : str
+            namespace to cache.
 
         """

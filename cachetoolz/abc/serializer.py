@@ -13,11 +13,12 @@ class SerializerABC(ABC):
 
         Parameters
         ----------
-        value
+        value : Any
             Value to encode
 
         Returns
         -------
+        encoded : Any
             Value encoded
 
         """
@@ -28,11 +29,12 @@ class SerializerABC(ABC):
 
         Parameters
         ----------
-        value
+        value : Any
             Value to decode
 
         Returns
         -------
+        decoded : Any
             Value decoded
 
         """

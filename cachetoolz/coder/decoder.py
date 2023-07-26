@@ -23,7 +23,7 @@ from ..exceptions import RegistryError, UnknownDecoderError
 
 
 class Decoder(JSONDecoder):
-    """Decoder class."""
+    """JSON decoder class."""
 
     DECODERS: ClassVar[Dict[str, types.Decoder]] = {
         'time': time.fromisoformat,
@@ -68,7 +68,7 @@ def register(name: str) -> types.Decorator:
 
     Parameters
     ----------
-    name
+    name : str
         Decoder name.
 
     Examples

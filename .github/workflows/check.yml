@@ -30,8 +30,9 @@ jobs:
           installer-parallel: true
 
       - name: Install dependencies
-        run: poetry install --no-interaction --with dev
+        run: poetry install --only ci
 
       - name: Run check
-        run: |
-          make check
+        env:
+          NOXSESSION: check
+        run: make nox
