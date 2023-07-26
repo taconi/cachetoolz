@@ -181,6 +181,34 @@ async def _(
 
 
 @test(
+    '(cache) synchronous functions with ttl timedelta',
+    tags=['unit', 'decorator', 'cache'],
+)
+def _(
+    Backend=each(AsyncMock, Mock),
+    ttl=each(timedelta(days=7), timedelta(weeks=10)),
+    args=each((3, 5, 7), (2, 6, 8)),
+    expect=each('-9', '-12'),
+    key=each(
+        'default:694a0d3cd39806a828716e4fa01cffbd',
+        'default:61cc1194bdab22449db8981152909985',
+    ),
+):
+    backend = Backend()
+    backend.get.return_value = None
+
+    result = str(Cache(backend)(ttl=ttl)(sub)(*args))
+
+    if isinstance(backend, AsyncMock):
+        backend.get.assert_awaited_once_with(key)
+        backend.set.assert_awaited_once_with(key, result, ttl)
+    else:
+        backend.get.assert_called_once_with(key)
+        backend.set.assert_called_once_with(key, result, ttl)
+    assert result == expect
+
+
+@test(
     "(cache) Don't crash when giving error when setting the cache",
     tags=['unit', 'decorator', 'cache', 'raise'],
 )

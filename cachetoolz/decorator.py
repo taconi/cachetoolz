@@ -95,24 +95,28 @@ class Cache:
 
     def __call__(
         self,
-        *args,
+        func: Optional[Func] = None,
+        /,
+        *,
         ttl: Union[int, float, timedelta] = inf,
         namespace: str = 'default',
         typed: bool = False,
         keygen: Optional[KeyGenerator] = None,
     ) -> Decorator:
         """Caches a function call and stores it in the namespace."""
-        if isinf(ttl):
-            ttl = timedelta(weeks=20e3)
-        elif not isinstance(ttl, timedelta):
+        if isinstance(ttl, (int, float)) and not isinf(ttl):
             ttl = timedelta(seconds=ttl)
+        elif isinstance(ttl, timedelta):
+            pass
+        elif isinf(ttl):
+            ttl = timedelta(weeks=20e3)
 
         keygen = curry(make_key)(namespace, keygen, typed)
         manipulator = manipulate(curry(Cache._cache)(self, ttl, keygen))
 
-        if args:
+        if func:
             # @cache
-            return manipulator(args[0])
+            return manipulator(func)
         # @cache()
         return manipulator
 
@@ -138,7 +142,11 @@ class Cache:
         return coder.decode(result)
 
     def clear(
-        self, *args, namespaces: Sequence[str] = ('default',)
+        self,
+        func: Optional[Func] = None,
+        /,
+        *,
+        namespaces: Sequence[str] = ('default',),
     ) -> Decorator:
         """Clears all caches for all namespaces.
 
@@ -156,8 +164,8 @@ class Cache:
         """
         manipulator = manipulate(curry(Cache._clear)(self, namespaces))
 
-        if args:
+        if func:
             # @cache.clear
-            return manipulator(args[0])
+            return manipulator(func)
         # @cache.clear(namespaces=['ns1'])
         return manipulator
