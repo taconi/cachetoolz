@@ -8,7 +8,7 @@
 [![Downloads](https://img.shields.io/pypi/dm/cachetoolz?logo=pypi&label=Downloads&color=%2373DC8C)](https://pypi.org/project/cachetoolz/)
 [![Documentation](https://img.shields.io/badge/Documentation-1769AA?color=%234B78E6)](https://taconi.github.io/cachetoolz)
 [![Changelog](https://img.shields.io/badge/Changelog-1769AA?color=%2373DC8C)](https://taconi.github.io/cachetoolz/changelog)
-[![Issue Tracker](https://img.shields.io/badge/Issue Tracker-1769AA?color=%23FA9BFA)]("https://github.com/taconi/cachetoolz/issues")
+[![Issue Tracker](https://img.shields.io/badge/Issue%20Tracker-1769AA?color=%23FA9BFA)]("https://github.com/taconi/cachetoolz/issues")
 [![Contributing](https://img.shields.io/badge/Contributing-1769AA?color=%234B78E6)](https://taconi.github.io/cachetoolz/contributing)
 
 
