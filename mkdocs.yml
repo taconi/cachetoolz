@@ -1,0 +1,83 @@
+---
+site_name: CacheToolz
+site_description: This library offers a decorator that enhances the functionality of caching functions.
+site_url: https://taconi.github.io/cachetoolz
+
+repo_name: taconi/cachetoolz
+repo_url: https://github.com/taconi/cachetoolz
+
+nav:
+- Home: index.md
+- Installation: installation.md
+- Usage: usage.md
+  # - Backends: backends.md
+  # - Coder: coder.md
+- Reference: reference.md
+- Contributor Guide: contributing.md
+- Changelog: changelog.md
+
+theme:
+  name: material
+  icon:
+    logo: material/cached
+  palette:
+  - media: '(prefers-color-scheme: light)'
+    scheme: default
+    primary: deep purple
+    accent: deep purple
+    toggle:
+      name: Switch to dark mode
+      icon: material/weather-night
+  - media: '(prefers-color-scheme: dark)'
+    scheme: slate
+    primary: deep purple
+    accent: deep purple
+    toggle:
+      name: Switch to light mode
+      icon: material/weather-sunny
+  features:
+  - search.suggest
+  - search.highlight
+  - content.tabs.link
+  - content.code.annotate
+  - content.code.copy
+  - content.code.select
+
+watch:
+- cachetoolz
+
+plugins:
+- search:
+- mkdocstrings:
+    handlers:
+      python:
+        paths:
+          cachetoolz
+        options:
+          docstring_style: numpy
+          show_source: false
+          allow_inspection: false
+          show_root_heading: true
+          show_root_full_path: true
+          ignore_init_summary: true
+          filters:
+            - "!^__(init|repr)__$"
+            - "!^_"
+
+markdown_extensions:
+  toc:
+    permalink: true
+    permalink_title: Anchor link to this section for reference
+    slugify: !!python/object/apply:pymdownx.slugs.slugify
+      kwds:
+        case: lower
+  pymdownx.superfences:
+    custom_fences:
+    - name: mermaid
+      class: mermaid
+      format: !!python/name:pymdownx.superfences.fence_code_format
+  pymdownx.tabbed:
+    alternate_style: true
+
+extra:
+  generator: false

@@ -7,23 +7,22 @@ from ..abc import AsyncBackendABC, BackendABC
 
 
 class RedisBackend(BackendABC):
-    """Redis cache."""
+    """Redis cache.
 
-    def __init__(self, url: str, **kwargs: Dict[str, Any]):
-        """Initialize the instance.
-
+    Parameters
+    ----------
+    url : str
+        Redis url.
+    kwargs : dict[str, Any]
+        Takes the same constructor arguments as
+        `redis.client.Redis.from_url`.
         The ``decode_responses`` parameter will always be True
         as the result needs to be returned as a string.
 
-        Parameters
-        ----------
-        url
-            Redis url
-        kwargs
-            Takes the same constructor arguments as
-            :method:`~redis.client.Redis.from_url`
+    """
 
-        """
+    def __init__(self, url: str, **kwargs: Dict[str, Any]):
+        """Initialize the instance."""
         try:
             from redis import Redis
         except ImportError as exc:
@@ -45,12 +44,15 @@ class RedisBackend(BackendABC):
 
         Parameters
         ----------
-        key
+        key : str
             cache identifier key.
 
         Returns
         -------
-            Value cached if exists and not expired else return None
+        with_cache : Any
+            Value cached.
+        without_cache : None
+            If not exists or expired.
 
         """
         self.logger.debug("Get 'key=%s'", key)
@@ -65,12 +67,12 @@ class RedisBackend(BackendABC):
 
         Parameters
         ----------
-        key
-            cache identifier key
-        value
-            value to cach
-        expires_at
-            expiry time
+        key : str
+            cache identifier key.
+        value : str
+            value to cache encoded.
+        expires_at : datetime.timedelta
+            expiry time.
 
         """
         self.logger.debug(
@@ -87,7 +89,7 @@ class RedisBackend(BackendABC):
 
         Parameters
         ----------
-        namespaces
+        namespaces : str
             namespace to cache.
 
         """
@@ -98,23 +100,24 @@ class RedisBackend(BackendABC):
 
 
 class AsyncRedisBackend(AsyncBackendABC):
-    """Async Redis backend."""
+    """Async Redis backend.
 
-    def __init__(self, url: str, **kwargs):
-        """Initialize the instance.
+    This backend is used to store caches redis asynchronous.
 
+    Parameters
+    ----------
+    url : str
+        Redis url.
+    kwargs : dict[str, Any]
+        Takes the same constructor arguments as
+        `redis.asyncio. client.Redis.from_url`.
         The ``decode_responses`` parameter will always be True
         as the result needs to be returned as a string.
 
-        Parameters
-        ----------
-        url
-            Redis url
-        kwargs
-            Takes the same constructor arguments as
-            :method:`~redis.asyncio. client.Redis.from_url`
+    """
 
-        """
+    def __init__(self, url: str, **kwargs):
+        """Initialize the instance."""
         try:
             from redis.asyncio import Redis
         except ImportError as exc:
@@ -136,12 +139,15 @@ class AsyncRedisBackend(AsyncBackendABC):
 
         Parameters
         -----------
-        key
-            cache identifier key
+        key : str
+            cache identifier key.
 
         Returns
         -------
-            Value cached if exists and not expired else return None
+        with_cache : Any
+            Value cached.
+        without_cache : None
+            If not exists or expired.
 
         """
         self.logger.debug("Get 'key=%s'", key)
@@ -156,12 +162,12 @@ class AsyncRedisBackend(AsyncBackendABC):
 
         Parameters
         ----------
-        key
-            cache identifier key
-        value
-            value to cach
-        expires_at
-            expiry time
+        key : str
+            cache identifier key.
+        value : str
+            value to cache encoded.
+        expires_at : datetime.timedelta
+            expiry time.
 
         """
         self.logger.debug(
@@ -178,7 +184,7 @@ class AsyncRedisBackend(AsyncBackendABC):
 
         Parameters
         ----------
-        namespaces
+        namespaces : str
             namespace to cache.
 
         """

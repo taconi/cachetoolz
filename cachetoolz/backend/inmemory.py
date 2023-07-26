@@ -14,7 +14,20 @@ from ..abc import AsyncBackendABC, BackendABC
 
 @dataclass
 class Cached:
-    """Cached object."""
+    """Cached object.
+
+    Attributes
+    ----------
+    value : str
+        value to cache encoded.
+    expires_at : datetime.datetime
+        expiry time.
+
+    Examples
+    --------
+    >>> Cached(value='foo', expires_at=datetime.now())
+
+    """
 
     value: str
     expires_at: datetime
@@ -24,7 +37,11 @@ Store: TypeVar = DefaultDict[str, Dict[str, Cached]]
 
 
 class InMemory(BackendABC):
-    """In memory backend."""
+    """In memory backend.
+
+    This backend is used to store caches in memory synchronous.
+
+    """
 
     def __init__(self):
         """Initialize the instance."""
@@ -42,12 +59,15 @@ class InMemory(BackendABC):
 
         Parameters
         ----------
-        key
-            cache identifier key
+        key : str
+            cache identifier key.
 
         Returns
         -------
-            Value cached if exists and not expired else return None
+        with_cache : Any
+            Value cached.
+        without_cache : None
+            If not exists or expired.
 
         """
         self.logger.debug("Get 'key=%s'", key)
@@ -67,12 +87,12 @@ class InMemory(BackendABC):
 
         Parameters
         ----------
-        key
-            cache identifier key
-        value
-            value to cach
-        expires_at
-            expiry time
+        key : str
+            cache identifier key.
+        value : str
+            value to cache encoded.
+        expires_at : datetime.timedelta
+            expiry time.
 
         """
         self.logger.debug(
@@ -94,8 +114,8 @@ class InMemory(BackendABC):
 
         Parameters
         ----------
-        namespaces
-            namespace to cache
+        namespaces : str
+            namespace to cache.
 
         """
         self.logger.debug("Clear 'namespace=%s'", namespace)
@@ -104,7 +124,11 @@ class InMemory(BackendABC):
 
 
 class AsyncInMemory(AsyncBackendABC):
-    """Async in memory backend."""
+    """Async in memory backend.
+
+    This backend is used to store caches in memory asynchronous.
+
+    """
 
     def __init__(self):
         """Initialize the instance."""
@@ -123,12 +147,15 @@ class AsyncInMemory(AsyncBackendABC):
 
         Parameters
         ----------
-        key
-            cache identifier key
+        key : str
+            cache identifier key.
 
         Returns
         -------
-            Value cached if exists and not expired else return None
+        with_cache : Any
+            Value cached.
+        without_cache : None
+            If not exists or expired.
 
         """
         self.logger.debug("Get 'key=%s'", key)
@@ -148,12 +175,12 @@ class AsyncInMemory(AsyncBackendABC):
 
         Parameters
         ----------
-        key
-            cache identifier key
-        value
-            value to cach
-        expires_at
-            expiry time
+        key : str
+            cache identifier key.
+        value : str
+            value to cache encoded.
+        expires_at : datetime.timedelta
+            expiry time.
 
         """
         self.logger.debug(
@@ -176,8 +203,8 @@ class AsyncInMemory(AsyncBackendABC):
 
         Parameters
         ----------
-        namespaces
-            namespace to cache
+        namespaces : str
+            namespace to cache.
 
         """
         self.logger.debug("Clear 'namespace=%s'", namespace)

@@ -8,7 +8,21 @@ from ..abc import AsyncBackendABC, BackendABC
 
 
 class MongoBackend(BackendABC):
-    """MongoDB cache."""
+    """MongoDB cache.
+
+    This backend is used to store caches mongo synchronous.
+
+    Parameters
+    ----------
+    host : str
+        MongoDB URI.
+    database : str
+        Cache database name.
+    kwargs : dict[str, Any]
+        Takes the same constructor arguments as
+        `pymongo.mongo_client.MongoClient`.
+
+    """
 
     def __init__(
         self,
@@ -16,19 +30,7 @@ class MongoBackend(BackendABC):
         database: str = '.cachetoolz',
         **kwargs: Dict[str, Any],
     ):
-        """Initialize the instance.
-
-        Parameters
-        ----------
-        host
-            MongoDB URI
-        database
-            Cache database name
-        kwargs
-            Takes the same constructor arguments as
-            :class:`~pymongo.mongo_client.MongoClient`
-
-        """
+        """Initialize the instance."""
         try:
             from pymongo import MongoClient
         except ImportError as exc:
@@ -63,12 +65,15 @@ class MongoBackend(BackendABC):
 
         Parameters
         ----------
-        key
-            cache identifier key
+        key : str
+            cache identifier key.
 
         Returns
         -------
-            Value cached if exists and not expired else return None
+        with_cache : Any
+            Value cached.
+        without_cache : None
+            If not exists or expired.
 
         """
         self.logger.debug("Get 'key=%s'", key)
@@ -88,12 +93,12 @@ class MongoBackend(BackendABC):
 
         Parameters
         ----------
-        key
-            cache identifier key
-        value
-            value to cach
-        expires_at
-            expiry time
+        key : str
+            cache identifier key.
+        value : str
+            value to cache encoded.
+        expires_at : datetime.timedelta
+            expiry time.
 
         """
         self.logger.debug(
@@ -125,8 +130,8 @@ class MongoBackend(BackendABC):
 
         Parameters
         ----------
-        namespaces
-            namespace to cache
+        namespaces : str
+            namespace to cache.
 
         """
         self.logger.debug("Clear 'namespace=%s'", namespace)
@@ -136,7 +141,21 @@ class MongoBackend(BackendABC):
 
 
 class AsyncMongoBackend(AsyncBackendABC):
-    """Async MongoDB cache."""
+    """Async MongoDB cache.
+
+    This backend is used to store caches mongo asynchronous.
+
+    Parameters
+    ----------
+    host : str
+        MongoDB URI.
+    database : str
+        Cache database name.
+    kwargs : dict[str, Any]
+        Takes the same constructor arguments as
+        `pymongo.mongo_client.MongoClient`.
+
+    """
 
     def __init__(
         self,
@@ -144,19 +163,7 @@ class AsyncMongoBackend(AsyncBackendABC):
         database: str = '.cachetoolz',
         **kwargs: Dict[str, Any],
     ):
-        """Initialize the instance.
-
-        Parameters
-        ----------
-        host
-            MongoDB URI
-        database
-            Cache database name
-        kwargs
-            Takes the same constructor arguments as
-            :class:`~pymongo.mongo_client.MongoClient`
-
-        """
+        """Initialize the instance."""
         try:
             from motor.motor_asyncio import AsyncIOMotorClient
         except ImportError as exc:
@@ -193,12 +200,15 @@ class AsyncMongoBackend(AsyncBackendABC):
 
         Parameters
         ----------
-        key
-            cache identifier key
+        key : str
+            cache identifier key.
 
         Returns
         -------
-            Value cached if exists and not expired else return None
+        with_cache : Any
+            Value cached.
+        without_cache : None
+            If not exists or expired.
 
         """
         self.logger.debug("Get 'key=%s'", key)
@@ -218,12 +228,12 @@ class AsyncMongoBackend(AsyncBackendABC):
 
         Parameters
         ----------
-        key
-            cache identifier key
-        value
-            value to cach
-        expires_at
-            expiry time
+        key : str
+            cache identifier key.
+        value : str
+            value to cache encoded.
+        expires_at : datetime.timedelta
+            expiry time.
 
         """
         self.logger.debug(
@@ -255,8 +265,8 @@ class AsyncMongoBackend(AsyncBackendABC):
 
         Parameters
         ----------
-        namespaces
-            namespace to cache
+        namespaces : str
+            namespace to cache.
 
         """
         self.logger.debug("Clear 'namespace=%s'", namespace)

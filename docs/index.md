@@ -25,7 +25,7 @@ Overall, this library simplifies the implementation of caching in your applicati
 
 # Installation
 Install and update using [pip](https://pip.pypa.io/en/stable/getting-started/):
-```{.sh linenums=0}
+```bash
 pip install cachetoolz
 ```
 
