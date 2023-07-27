@@ -30,6 +30,8 @@ exclude = ["reports", "docs", "examples", "tests"]
 
 [tool.poetry.urls]
 "Issue Tracker" = "https://github.com/taconi/cachetoolz/issues"
+Changelog = "https://taconi.github.io/cachetoolz/changelog"
+Contributing = "https://taconi.github.io/cachetoolz/contributing"
 
 [tool.poetry.dependencies]
 python = "^3.8.1"
