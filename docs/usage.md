@@ -42,7 +42,7 @@ from cachetoolz import RedisBackend, Cache
 cache = Cache(RedisBackend())
 ```
 
-For more details on backends see [backends](/backends/)
+For more details on backends see [backends](#backend) section.
 
 ### @cache
 
