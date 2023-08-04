@@ -1,13 +1,19 @@
 """Modules to automate commands."""
 from os import environ
 
+import nox
 from nox_poetry import Session, session
+
+nox.options.report = 'reports/nox.json'
+nox.options.stop_on_first_error = True
+nox.options.reuse_existing_virtualenvs = True
+nox.options.error_on_missing_interpreters = True
 
 SRC = 'cachetoolz'
 PYTHON_VERSIONS = ['3.8', '3.9', '3.10', '3.11']
 
 
-@session(reuse_venv=True)
+@session
 def fmt(session: Session):
     """Format code."""
     session.run_always(*'poetry  install --with dev'.split(), external=True)
@@ -18,7 +24,7 @@ def fmt(session: Session):
     session.run('docformatter', '--in-place', '-r', SRC)
 
 
-@session(reuse_venv=True)
+@session
 def check(session: Session):
     """Static check."""
     session.run_always(*'poetry  install --with dev'.split(), external=True)
@@ -29,7 +35,7 @@ def check(session: Session):
     session.run('docformatter', '-r', SRC)
 
 
-@session(python=PYTHON_VERSIONS, reuse_venv=True)
+@session(python=PYTHON_VERSIONS)
 def tests(session: Session):
     """Run tests."""
     session.run_always(
@@ -42,7 +48,7 @@ def tests(session: Session):
     session.run('coverage', 'html')
 
 
-@session(reuse_venv=True)
+@session
 def docs(session: Session):
     """Serve documentation."""
     session.run_always(*'poetry install --only docs'.split(), external=True)
@@ -50,7 +56,7 @@ def docs(session: Session):
     session.run('mkdocs', 'serve')
 
 
-@session(reuse_venv=True)
+@session
 def publish_docs(session: Session):
     """Publish documentation."""
     session.run_always(*'poetry install --only docs'.split(), external=True)
@@ -58,7 +64,7 @@ def publish_docs(session: Session):
     session.run('mkdocs', 'gh-deploy')
 
 
-@session(reuse_venv=True)
+@session
 def publish_pkg(session: Session):
     """Publish package."""
     session.run(

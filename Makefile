@@ -10,4 +10,20 @@ install:
 
 .PHONY: nox
 nox:
-	@ poetry run nox --report reports/nox.json
+	@ poetry run nox
+
+.PHONY: clear
+clear:
+	@ find . -name '*.pyc' -exec rm -rf {} \;
+	@ find . -name '__pycache__' -exec rm -rf {} \;
+	@ rm -f coverage.xml
+	@ rm -f .coverage
+	@ rm -rf .nox/
+	@ rm -rf .cache/
+	@ rm -rf .mypy_cache/
+	@ rm -rf dist/
+	@ rm -rf build/
+	@ rm -rf site/
+	@ rm -rf reports/nox.json
+	@ rm -rf reports/coverage/
+	@ rm -rf reports/flake8/
