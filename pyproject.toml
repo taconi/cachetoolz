@@ -55,7 +55,7 @@ nox-poetry = "^1.0.3"
 [tool.poetry.group.test.dependencies]
 ward = "^0.67.2b0"
 coverage = {extras = ["toml"], version = "^7.2.7"}
-faker = ">=19.1,<21.0"
+faker = ">=19.1,<22.0"
 
 [tool.poetry.group.dev.dependencies]
 ipdb = "^0.13.13"
