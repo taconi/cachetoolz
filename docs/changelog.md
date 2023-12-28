@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.3.2] - 2023-12-23
+### Added
+- Python 3.12 support
+
 ## [0.3.1] - 2023-07-26
 ### Added
 - Documentation
@@ -29,7 +33,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Decorator argument name cache from ``expire`` to ``ttl``
 - The cache decorator only takes keyword arguments
 
-[Unreleased]: https://github.com/taconi/cachetoolz/compare/0.3.1...HEAD
+[Unreleased]: https://github.com/taconi/cachetoolz/compare/0.3.2...HEAD
+[0.3.2]: https://github.com/taconi/cachetoolz/compare/0.3.1...0.3.2
 [0.3.1]: https://github.com/taconi/cachetoolz/compare/0.3.0...0.3.1
 [0.3.0]: https://github.com/taconi/cachetoolz/compare/0.2.0...0.3.0
 [0.2.0]: https://github.com/taconi/cachetoolz/releases/tag/0.2.0
